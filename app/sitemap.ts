@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getTopProductIds } from "@/lib/api";
 
-const BASE = "https://shop-catalog-demo.vercel.app";
+const BASE = "https://product-catalog-drab-gamma.vercel.app";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const ids = await getTopProductIds();

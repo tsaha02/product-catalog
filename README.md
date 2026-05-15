@@ -11,7 +11,7 @@ npm run dev
 
 ## Live
 
-> add Vercel URL here
+https://product-catalog-drab-gamma.vercel.app
 
 ---
 

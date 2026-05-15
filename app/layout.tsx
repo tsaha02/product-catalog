@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     default: "ShopCatalog",
   },
   description: "A simple product catalog.",
-  metadataBase: new URL("https://shop-catalog-demo.vercel.app"),
+  metadataBase: new URL("https://product-catalog-drab-gamma.vercel.app"),
 };
 
 export default function RootLayout({
