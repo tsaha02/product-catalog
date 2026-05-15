@@ -19,7 +19,7 @@ async function saveCart(cart: Cart) {
   const store = await cookies();
   store.set("cart", JSON.stringify(cart), {
     path: "/",
-    httpOnly: false, // needs to be readable server-side for the navbar badge count
+    httpOnly: false,
     maxAge: 60 * 60 * 24 * 7,
     sameSite: "lax",
   });

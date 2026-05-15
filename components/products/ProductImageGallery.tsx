@@ -17,7 +17,7 @@ export default function ProductImageGallery({
       <div className="relative aspect-square bg-gray-100">
         <Image
           src={images[selected]}
-          alt={`${title} — image ${selected + 1}`}
+          alt={title}
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover"
@@ -30,7 +30,6 @@ export default function ProductImageGallery({
             <button
               key={i}
               onClick={() => setSelected(i)}
-              aria-label={`Image ${i + 1}`}
               className={`relative w-14 h-14 bg-gray-100 border ${i === selected ? "border-gray-900" : "border-gray-200"}`}
             >
               <Image

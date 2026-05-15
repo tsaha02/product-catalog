@@ -21,7 +21,7 @@ export default function Pagination({ total, page, perPage }: Props) {
   }
 
   return (
-    <nav className="flex items-center gap-4 mt-8 text-sm" aria-label="Pagination">
+    <nav className="flex items-center gap-4 mt-8 text-sm">
       <button
         onClick={() => goTo(page - 1)}
         disabled={page <= 1}

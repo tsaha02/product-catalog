@@ -23,7 +23,7 @@ export default function CategoryFilter({ categories, selected }: Props) {
   }
 
   return (
-    <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by category">
+    <div className="flex flex-wrap gap-2">
       <button
         onClick={() => select(null)}
         className={`px-3 py-1 text-sm border ${!selected ? "bg-gray-900 text-white border-gray-900" : "text-gray-600 hover:border-gray-400"}`}

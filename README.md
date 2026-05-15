@@ -1,35 +1,26 @@
-# Product Catalog
+# product-catalog
 
-A small e-commerce product catalog built with Next.js 15 App Router, TypeScript, and Tailwind. Uses [DummyJSON](https://dummyjson.com) as the data source.
+Next.js 15 take-home project. Product listing, detail pages, and a cart. Data from [DummyJSON](https://dummyjson.com).
 
-## Running locally
+## Setup
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Live URL
+## Live
 
-> Add after Vercel deployment
+> add Vercel URL here
 
 ---
 
-## How it works
+## Notes
 
-**3 pages:** product listing (`/`), product detail (`/products/[id]`), cart (`/cart`).
+Server Components by default, `"use client"` only where actually needed — URL updates, image gallery, cart controls.
 
-Everything is a Server Component by default. I only added `"use client"` where I actually needed browser APIs or hooks — the category filter, pagination, and search input update the URL client-side, the image gallery tracks the selected image, the cart list uses `useOptimistic` for instant qty feedback.
+Each fetch in `lib/api.ts` has a comment explaining the cache choice. Cart is stored in a cookie (not localStorage) so the server can read it directly for the navbar badge. `useOptimistic` handles qty changes in the cart so the UI doesn't wait on the server action.
 
-**Search:** the listing page reads `?q=` from `searchParams` and hits DummyJSON's search endpoint. The input debounces with a plain `setTimeout` (400ms) and pushes to the URL — no library needed. Searching clears the active category filter since the two don't combine in DummyJSON's API.
+The first 20 product pages are statically generated via `generateStaticParams`. Search hits `/products/search` with a 400ms debounce on the URL param.
 
-**Caching:** the product listing and category list use `force-cache` since they don't change mid-session. Product detail pages use `revalidate: 3600` (ISR). Related products and search results use `no-store` because they need to be fresh. The comments above each fetch in `lib/api.ts` explain the choice.
-
-**Cart:** stored as a JSON cookie so it's readable server-side. The navbar badge is rendered by a Server Component that reads the cookie directly — no client JS needed for the count. Cart mutations are Server Actions that call `revalidatePath` so the badge and cart page stay in sync.
-
-**Static generation:** the first 20 product detail pages are pre-built with `generateStaticParams`. Each has its own `generateMetadata` for title and OG image.
-
-## What I skipped
-
-- Tests (Server Actions are straightforward to test with a mocked `cookies()`)
-- Checkout flow (out of scope per brief)
+Would add tests and a real checkout given more time.

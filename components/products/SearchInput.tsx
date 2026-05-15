@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 export default function SearchInput({ defaultValue }: { defaultValue?: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const timer = useRef<ReturnType<typeof setTimeout>>(null);
+  const timer = useRef<NodeJS.Timeout>(null);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const q = e.target.value.trim();
