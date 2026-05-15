@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Product Catalog
 
-## Getting Started
+A small e-commerce product catalog built with Next.js 15 App Router, TypeScript, and Tailwind. Uses [DummyJSON](https://dummyjson.com) as the data source.
 
-First, run the development server:
+## Running locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Live URL
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> Add after Vercel deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## How it works
 
-To learn more about Next.js, take a look at the following resources:
+**3 pages:** product listing (`/`), product detail (`/products/[id]`), cart (`/cart`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Everything is a Server Component by default. I only added `"use client"` where I actually needed browser APIs or hooks — the category filter, pagination, and search input update the URL client-side, the image gallery tracks the selected image, the cart list uses `useOptimistic` for instant qty feedback.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Search:** the listing page reads `?q=` from `searchParams` and hits DummyJSON's search endpoint. The input debounces with a plain `setTimeout` (400ms) and pushes to the URL — no library needed. Searching clears the active category filter since the two don't combine in DummyJSON's API.
 
-## Deploy on Vercel
+**Caching:** the product listing and category list use `force-cache` since they don't change mid-session. Product detail pages use `revalidate: 3600` (ISR). Related products and search results use `no-store` because they need to be fresh. The comments above each fetch in `lib/api.ts` explain the choice.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Cart:** stored as a JSON cookie so it's readable server-side. The navbar badge is rendered by a Server Component that reads the cookie directly — no client JS needed for the count. Cart mutations are Server Actions that call `revalidatePath` so the badge and cart page stay in sync.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Static generation:** the first 20 product detail pages are pre-built with `generateStaticParams`. Each has its own `generateMetadata` for title and OG image.
+
+## What I skipped
+
+- Tests (Server Actions are straightforward to test with a mocked `cookies()`)
+- Checkout flow (out of scope per brief)
